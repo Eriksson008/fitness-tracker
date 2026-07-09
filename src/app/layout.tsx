@@ -1,5 +1,12 @@
 import type { Metadata } from "next";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-jakarta",
+  display: "swap"
+});
 
 export const metadata: Metadata = {
   title: "Fitness Tracker",
@@ -12,8 +19,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html className={plusJakartaSans.variable} lang="en">
+      <body className={plusJakartaSans.variable}>{children}</body>
     </html>
   );
 }

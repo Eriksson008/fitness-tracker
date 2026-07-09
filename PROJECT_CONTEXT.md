@@ -28,6 +28,12 @@ Prisma is pinned to the latest 6.x line for a predictable SQLite/migration setup
 - `prisma/migrations/*`: database migrations.
 - `tests/calculators.test.ts`: formula coverage.
 
+## Design Notes
+
+- Visual direction: Premium Dark Fitness.
+- Typography: `Plus Jakarta Sans` via `next/font`, falling back to `Inter`, `system-ui`, and `sans-serif`.
+- Type should feel like a premium athletic dashboard: energetic through contrast, spacing, and red accents, not through overly heavy font weights.
+
 ## Commands
 
 ```powershell

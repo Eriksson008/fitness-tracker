@@ -13,6 +13,7 @@
 - Added formula tests.
 - Added repo methodology docs.
 - Updated second-brain project note.
+- Refined typography with Plus Jakarta Sans, lighter professional weights, and updated type rules.
 
 ## Next
 

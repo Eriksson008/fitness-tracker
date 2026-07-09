@@ -29,6 +29,41 @@ The app is a daily performance dashboard, so dark default fits the context bette
 - Accent: controlled red for primary actions and key progress.
 - Secondary accents: restrained gold and green for progress/status variety.
 
+## Typography
+
+The typography should feel like a premium athletic dashboard: clear, energetic, and young without becoming loud or arcade-like.
+
+Font stack:
+
+- Primary: `Plus Jakarta Sans`
+- Fallback: `Inter`, `system-ui`, `sans-serif`
+
+CSS variables:
+
+- `--font-sans`
+- `--text-xs`
+- `--text-sm`
+- `--text-md`
+- `--text-lg`
+- `--text-xl`
+- `--text-hero`
+- `--weight-regular`
+- `--weight-medium`
+- `--weight-semibold`
+- `--weight-bold`
+
+Usage:
+
+- Hero headings use large confident sizing with variable weight around `750`, tight but polished tracking, and a premium line height.
+- Eyebrows stay uppercase, small, red, and tracked; they should accent the interface rather than shout.
+- Card section labels use smaller uppercase type than the hero eyebrow.
+- Card titles use `700` weight with slight negative tracking.
+- Body and helper text use regular weight and `1.55` line height.
+- Form labels use semibold, small, non-uppercase text.
+- Inputs use medium-weight values; placeholders stay regular and muted.
+- Buttons use semibold text with subtle negative tracking, not heavy display weight.
+- Stat values are bold but restrained, with supporting copy in regular weight.
+
 ## UI Principles
 
 - Dashboard first.
