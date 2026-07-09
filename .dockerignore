@@ -1,0 +1,17 @@
+node_modules
+.next
+coverage
+data
+docker-data
+.env
+.git
+*.log
+README.md
+PROJECT_CONTEXT.md
+TASKS.md
+ROADMAP.md
+DECISIONS.md
+STYLE_GUIDE.md
+VERIFY.md
+AGENTS.md
+CLAUDE.md

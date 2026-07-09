@@ -1,0 +1,13 @@
+services:
+  app:
+    build:
+      context: .
+    environment:
+      DATABASE_URL: file:/app/data/fitness.db
+      NODE_ENV: production
+      NEXT_TELEMETRY_DISABLED: "1"
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
