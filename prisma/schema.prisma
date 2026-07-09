@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Profile {
+  id                   String   @id @default(cuid())
+  label                String
+  age                  Int
+  sex                  String
+  heightIn             Float
+  currentWeightLb      Float
+  goalWeightLb         Float
+  activityLevel        String
+  goalType             String
+  desiredPaceLbPerWeek Float?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  @@map("profile")
+}
+
+model WeightEntry {
+  id        String   @id @default(cuid())
+  date      DateTime @unique
+  weightLb  Float
+  note      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("weight_entries")
+}
+
+model NutritionEntry {
+  id        String   @id @default(cuid())
+  date      DateTime @unique
+  calories  Int
+  proteinG  Int
+  carbsG    Int
+  fatG      Int
+  note      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("nutrition_entries")
+}
+
+model WorkoutSession {
+  id          String            @id @default(cuid())
+  date        DateTime
+  type        String
+  durationMin Int
+  notes       String?
+  exercises   WorkoutExercise[]
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@map("workout_sessions")
+}
+
+model WorkoutExercise {
+  id               String         @id @default(cuid())
+  workoutSessionId String
+  name             String
+  sets             Int?
+  reps             Int?
+  weightLb         Float?
+  notes            String?
+  workoutSession   WorkoutSession @relation(fields: [workoutSessionId], references: [id], onDelete: Cascade)
+
+  @@map("workout_exercises")
+}
+
+model AppSetting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+
+  @@map("app_settings")
+}
