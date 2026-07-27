@@ -16,6 +16,23 @@ Fitness Tracker is a local-first personal dashboard for daily weight, calories, 
 
 Prisma is pinned to the latest 6.x line for a predictable SQLite/migration setup. Next.js and React use current releases.
 
+## Dependency Security
+
+Direct dependencies are pinned to exact versions; transitive vulnerabilities are patched through the
+`overrides` block in `package.json` rather than by waiting for the upstream package to bump its range.
+
+| Override | Reason |
+| --- | --- |
+| `sharp` `0.35.3` | GHSA-f88m-g3jw-g9cj (inherited libvips CVEs). Required because Next declares `sharp: ^0.34.5`, which cannot resolve to `0.35.x` under 0.x semver — upgrading Next does **not** clear this. |
+| `postcss` `8.5.23` | Path traversal via `sourceMappingURL` auto-loading (`<= 8.5.17`). |
+
+Check the current state with `npm audit` and `npm ls sharp postcss`. Overridden packages report
+`overridden` in the `npm ls` tree; that is the confirmation the pin took effect.
+
+Known accepted risk: `npm audit` reports high-severity findings for `brace-expansion` reached through
+the `eslint` / `typescript-eslint` chain. These are DoS-class, `devDependencies` only, and never ship
+in the Docker runtime image. Clearing them needs an ESLint 10 major upgrade.
+
 ## Architecture
 
 - `src/app/page.tsx`: dashboard-first server-rendered home screen.
@@ -81,4 +98,8 @@ The compose file binds the app to `127.0.0.1:3000` and persists SQLite through `
 
 ## Current Status
 
-Modernization MVP is implemented on branch `modernize-fitness-tracker`. The app has profile setup, calculators, weight tracking, nutrition tracking, workout logging, dashboard summaries, Docker support, migrations, tests, and project methodology docs.
+Modernization MVP is merged to `main` (PR #1). The app has profile setup, calculators, weight tracking, nutrition tracking, workout logging, dashboard summaries, Docker support, migrations, tests, and project methodology docs.
+
+Feature work is paused. The last change was a dependency security patch (2026-07-27): Next.js
+`16.2.10` to `16.2.12`, plus `sharp` and `postcss` overrides — see Dependency Security above. Verified
+with `scripts/verify.ps1` (lint, typecheck, test all OK) and `npm run build` (exit 0).
