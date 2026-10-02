@@ -23,15 +23,20 @@ Direct dependencies are pinned to exact versions; transitive vulnerabilities are
 
 | Override | Reason |
 | --- | --- |
-| `sharp` `0.35.3` | GHSA-f88m-g3jw-g9cj (inherited libvips CVEs). Required because Next declares `sharp: ^0.34.5`, which cannot resolve to `0.35.x` under 0.x semver — upgrading Next does **not** clear this. |
+| `sharp` `0.35.5` | GHSA-f88m-g3jw-g9cj (inherited libvips CVEs), then GHSA-rgj7-g3m4-5g8c (libheif, `< 0.35.4`). Required because Next declares `sharp: ^0.34.5`, which cannot resolve to `0.35.x` under 0.x semver — upgrading Next does **not** clear this. |
 | `postcss` `8.5.23` | Path traversal via `sourceMappingURL` auto-loading (`<= 8.5.17`). |
+| `nanoid` `3.3.18` | Infinite loop with a custom alphabet and size 0 (`< 3.3.18`), reached through `postcss`. |
+| `deepmerge-ts` `8.0.2` | GHSA-ggr8-5vv4-36mx (stack exhaustion). `@prisma/config` pins `7.1.5` exactly on the whole Prisma 6 line, and npm's only offered fix is a Prisma downgrade. `prisma generate` is verified working with 8.x. |
 
 Check the current state with `npm audit` and `npm ls sharp postcss`. Overridden packages report
 `overridden` in the `npm ls` tree; that is the confirmation the pin took effect.
 
-Known accepted risk: `npm audit` reports high-severity findings for `brace-expansion` reached through
-the `eslint` / `typescript-eslint` chain. These are DoS-class, `devDependencies` only, and never ship
-in the Docker runtime image. Clearing them needs an ESLint 10 major upgrade.
+`npm audit` reports **0 vulnerabilities** as of 2026-10-02. The `brace-expansion` findings once
+accepted here were cleared by a lockfile refresh (`npm audit fix`), without the ESLint 10 upgrade.
+
+npm 10.9 crashes (`Cannot read properties of null (reading 'edgesOut')`) when resolving
+`vitest@4.1.11`'s peer set during `npm install`. The lockfile was regenerated with npm 11; `npm ci`
+from it works under npm 10.
 
 ## Architecture
 
@@ -100,6 +105,7 @@ The compose file binds the app to `127.0.0.1:3000` and persists SQLite through `
 
 Modernization MVP is merged to `main` (PR #1). The app has profile setup, calculators, weight tracking, nutrition tracking, workout logging, dashboard summaries, Docker support, migrations, tests, and project methodology docs.
 
-Feature work is paused. The last change was a dependency security patch (2026-07-27): Next.js
-`16.2.10` to `16.2.12`, plus `sharp` and `postcss` overrides — see Dependency Security above. Verified
-with `scripts/verify.ps1` (lint, typecheck, test all OK) and `npm run build` (exit 0).
+Feature work is paused. The last change was a dependency security patch (2026-10-02): Next.js
+`16.2.12` to `16.3.8` (three RCE advisories), `vitest` `4.1.11`, and `sharp`, `nanoid` and
+`deepmerge-ts` overrides — see Dependency Security above. `npm audit`: 0 vulnerabilities. Verified
+with `scripts/verify.sh` (lint, typecheck, test, build, compose all OK).
